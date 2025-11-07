@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Demo | Micro-Expression Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --dark-gray: #374151;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: var(--dark-gray);
+            line-height: 1.5;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-container {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .requirements-card {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            height: 100%;
+        }
+        
+        .upload-card {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            height: 100%;
+        }
+
+        .requirements {
+            background-color: #fff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.6;
+            height: 100%;
+        }
+
+        .requirements h3 {
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .requirements li {
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gray);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: var(--light-gray);
+            margin-bottom: 1.5rem;
+            height: calc(100% - 60px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative; /* ✅ Add this */
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .upload-text p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .loading {
+            display: none;
+            position: absolute;        /* ✅ Absolutely positioned */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  /* ✅ Center it perfectly */
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .upload-area.loading-active {
+            justify-content: flex-start;
+        }
+
+        .spinner {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 3px solid rgba(37, 99, 235, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .error {
+            color: var(--danger);
+            font-weight: 500;
+            padding: 1rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .results {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            background-color: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .score-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--danger), var(--warning), var(--success));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .bipolar-bar {
+            display: flex;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+
+        .bar-left, .bar-right {
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+
+        .bar-left {
+            background-color: var(--danger);
+            width: 0%;
+        }
+
+        .bar-right {
+            background-color: var(--success);
+            width: 0%;
+        }
+
+        .emotions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .emotion-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .emotion-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .emotion-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .emotion-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            text-transform: capitalize;
+        }
+
+        .emotion-count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .upload-container {
+                flex-direction: column;
+            }
+            
+            .requirements-card, .upload-card {
+                padding: 1.5rem;
+            }
+            
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+            
+            .emotions-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        /* Add this to your existing CSS */
+        .results-container {
+            display: flex;
+            justify-content: center;
+            width: 100vw;
+            padding: 0;
+        }
+        .results-wrapper {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Modify your existing .results-left and .results-right styles */
+        .results-left, .results-right {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            overflow-y: auto;
+            min-width: 0; /* This prevents flex items from overflowing */
+        }
+
+        /* Update your media query */
+        @media (max-width: 1024px) {
+            .results-wrapper {
+                flex-direction: column;
+                height: auto;
+                overflow: auto;
+                max-width: 800px; /* Adjust as needed */
+            }
+
+            .results-left, .results-right {
+                height: auto;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-brain logo-icon"></i>
+            <h1 class="title">Micro-Expression Analysis</h1>
+        </div>
+        <p class="subtitle">AI-powered emotion detection for interview evaluation</p>
+    </div>
+
+    <div class="upload-container" id="upload-container">
+        <div class="requirements-card">
+            <div class="requirements" id="requirements-box">
+                <h3>📋 Video Upload Requirements</h3>
+                <ul>
+                    <li>👤 Only one person should appear in the video.</li>
+                    <li>💡 Ensure clear lighting with minimal shadows on the face.</li>
+                    <li>🙅 No face coverings, masks, filters, or sunglasses.</li>
+                    <li>🎯 Interviewee should look directly at the camera (±15° angle).</li>
+                    <li>🪞 Keep head orientation frontal — no extreme tilts or side profiles.</li>
+                    <li>👁️ Face must remain fully visible throughout the entire video.</li>
+                    <li>🪑 Avoid moving around; interviewee should be seated or steady.</li>
+                    <li>🎬 Recommended video duration: between 10 to 15 seconds.</li>
+                    <li>🔇 Background should be neutral and free from visual distractions.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="upload-card">
+            <div class="upload-area" id="upload-area">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <div class="upload-text">
+                    <h3>Upload Interview Video</h3>
+                    <p>Supported formats: MP4, AVI, MOV, MKV (max 100MB)</p>
+                </div>
+                <input type="file" id="video-input" class="file-input" accept=".mp4,.mov,.avi,.mkv" />
+                <button class="btn" id="upload-btn">
+                    <i class="fas fa-upload"></i> Select File
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Analyzing video...</p>
+                </div>
+            </div>
+            
+            <div class="error" id="error-message"></div>
+        </div>
+    </div>
+
+    <div class="results" id="results-card">
+        <div class="results-container">
+            <div class="results-wrapper">
+                <!-- Left Container -->
+                <div class="results-left">
+                    <h2>Analysis Results</h2>
+                    <div class="video-container">
+                        <video controls autoplay muted id="result-video">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Right Container -->
+                <div class="results-right">
+                    <div class="score-container">
+                        <h3>Emotional Positivity Score</h3>
+                        <div class="score-value" id="positivity-score">0%</div>
+                        <div class="progress-container">
+                            <div class="bipolar-bar">
+                                <div class="bar-left" id="positivity-left"></div>
+                                <div class="bar-right" id="positivity-right"></div>
+                            </div>
+                        </div>
+                        <div class="score-container">
+                            <h3>Stress / Discomfort Score</h3>
+                            <div class="score-value" id="stress-score">0%</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="stress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Detected Emotions</h3>
+                    <div class="emotions-container" id="emotions-container"></div>
+
+                    <div class="actions">
+                        <button class="btn" id="download-btn">
+                            <i class="fas fa-download"></i> Download Results
+                        </button>
+                        <button class="btn btn-secondary" id="new-analysis-btn">
+                            <i class="fas fa-redo"></i> New Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('upload-area');
+            const videoInput = document.getElementById('video-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            const loading = document.getElementById('loading');
+            const errorMsg = document.getElementById('error-message');
+            const uploadContainer = document.getElementById('upload-container');
+            const resultsCard = document.getElementById('results-card');
+            const resultVideo = document.getElementById('result-video');
+            const positivityScore = document.getElementById('positivity-score');
+            const positivityBar = document.getElementById('positivity-bar');
+            const emotionsContainer = document.getElementById('emotions-container');
+            const downloadBtn = document.getElementById('download-btn');
+            const newAnalysisBtn = document.getElementById('new-analysis-btn');
+            
+            // Emotion icons
+            const emotionIcons = {
+                "happiness": "fa-smile",
+                "surprise": "fa-surprise",
+                "sadness": "fa-sad-tear",
+                "fear": "fa-flushed",
+                "disgust": "fa-grimace",
+                "repression": "fa-meh"
+            };
+            
+            // Event Listeners
+            // Register listeners only once on page load
+            uploadArea.addEventListener('click', () => videoInput.click());
+            videoInput.addEventListener('change', handleFileUpload);  // ✅ Attach once ONLY
+            newAnalysisBtn.addEventListener('click', resetForm);
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--gray)';
+                uploadArea.style.backgroundColor = 'var(--light-gray)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--gray)';
+                uploadArea.style.backgroundColor = 'var(--light-gray)';
+                
+                if (e.dataTransfer.files.length) {
+                    videoInput.files = e.dataTransfer.files;
+                    handleFileUpload();
+                }
+            });
+            
+            // File upload handler
+            function handleFileUpload() {
+                const file = videoInput.files[0];
+                if (!file) return;
+                
+                // Validate file
+                const allowedExtensions = ['mp4', 'mov', 'avi', 'mkv'];
+                const fileType = file.type;
+                const fileExt = file.name.split('.').pop().toLowerCase();
+
+                if (
+                    !['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'].includes(fileType) &&
+                    !allowedExtensions.includes(fileExt)
+                ) {
+                    showError('Please upload a valid video file (MP4, MOV, AVI, MKV)');
+                    return;
+                }
+                
+                if (file.size > 100 * 1024 * 1024) {
+                    showError('File size exceeds 100MB limit');
+                    return;
+                }                   
+                // Show loading state
+                uploadArea.classList.add('loading-active');
+                [...uploadArea.children].forEach(child => {
+                    if (!child.classList.contains('loading')) {
+                        child.style.display = 'none';
+                    }
+                });
+                loading.style.display = 'flex';
+                errorMsg.style.display = 'none';
+                
+                // Prepare and send data
+                const formData = new FormData();
+                formData.append('video', file);
+                
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(error => {
+                    const message = error.error || 'Error processing video';
+                    showError(message);
+                })
+                .finally(() => {
+                    uploadArea.classList.remove('loading-active');
+                    [...uploadArea.children].forEach(child => {
+                        if (!child.classList.contains('loading')) {
+                            child.style.display = '';
+                        }
+                    });
+                    loading.style.display = 'none';
+                });
+            }
+            
+            // Display results
+            function displayResults(data) {
+                if (!data.video_url) {
+                    showError('No results available');
+                    return;
+                }
+                
+                // Set video source
+                resultVideo.src = data.video_url;
+                resultVideo.load();
+                resultVideo.play().catch(e => console.log('Autoplay prevented:', e));
+                
+                // Set positivity score
+                const score = data.positivity_score || 0;
+                positivityScore.textContent = score.toFixed(1) + '%';
+                // Reset both sides
+                document.getElementById("positivity-left").style.width = "0%";
+                document.getElementById("positivity-right").style.width = "0%";
+
+                if (score < 0) {
+                    const leftWidth = Math.min(Math.abs(score), 100);
+                    document.getElementById("positivity-left").style.width = leftWidth + "%";
+                } else {
+                    const rightWidth = Math.min(score, 100);
+                    document.getElementById("positivity-right").style.width = rightWidth + "%";
+                }
+
+                // Show Stress Score
+                const stress = data.stress_score || 0;
+                const clampedStress = Math.min(Math.max(stress, 0), 100);
+                document.getElementById("stress-score").textContent = clampedStress.toFixed(1) + '%';
+
+                const stressBar = document.getElementById("stress-bar");
+                stressBar.style.width = clampedStress + '%';
+                stressBar.style.backgroundColor = clampedStress < 30 ? 'var(--success)' : clampedStress < 70 ? 'var(--warning)' : 'var(--danger)';
+                
+                // Set download button
+                downloadBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    // Prefer the zip with video + results.txt; fall back to just the video if zip missing
+                    a.href = data.zip_url || data.video_url;
+                    a.download = data.zip_url
+                        ? `analysis_${data.file_id}.zip`
+                        : `emotion-analysis-${Date.now()}.mp4`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+                
+                // Display emotion cards
+                emotionsContainer.innerHTML = '';
+                if (data.emotion_counts) {
+                    for (const [emotion, count] of Object.entries(data.emotion_counts)) {
+                        const icon = emotionIcons[emotion] || 'fa-question';
+                        const card = document.createElement('div');
+                        card.className = 'emotion-card';
+                        card.innerHTML = `
+                            <i class="fas ${icon} emotion-icon"></i>
+                            <div class="emotion-name">${emotion.charAt(0).toUpperCase() + emotion.slice(1)}</div>
+                            <div class="emotion-count">${count}</div>
+                        `;
+                        emotionsContainer.appendChild(card);
+                    }
+                }
+                
+                // Show results
+                uploadContainer.style.display = 'none';
+                resultsCard.style.display = 'block';
+            }
+            
+            // Reset form for new analysis
+            function resetForm() {
+                uploadContainer.style.display = 'flex';
+                resultsCard.style.display = 'none';
+                videoInput.value = '';
+                resultVideo.src = '';
+                emotionsContainer.innerHTML = '';
+                errorMsg.style.display = 'none';
+            }
+            
+            // Show error message
+            function showError(message) {
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
