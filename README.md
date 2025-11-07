@@ -32,9 +32,9 @@ FYP Final/
 
 └─ static/
 
-   ├─ uploads/                     # Automatically created folder for raw uploads
+     ├─ uploads/                     # Automatically created folder for raw uploads
    
-   └─ processed/                   # Automatically created folder for results
+     └─ processed/                   # Automatically created folder for results
    
 
 ## 🛠️ Requirements
