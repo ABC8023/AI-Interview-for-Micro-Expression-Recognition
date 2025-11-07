@@ -17,15 +17,25 @@ It provides feedback such as Emotional Positivity Score and Stress/Discomfort Sc
 FYP Final/
 
 │  deploy(MobileNetV2).py          # Flask app – runs server, processes uploaded videos
+
 │  MobileNetV2.py                  # Model training & evaluation (TensorFlow MobileNetV2)
+
 │  Video_Preprocess(CASME).py      # Dataset preprocessing (CASME II)
+
 │  Video_Preprocess(DFME).py       # Dataset preprocessing (DFME)
+
 │  mobilenet_micro_expression_classifier.keras  # Pre-trained model file
+
 │  index.html                      # Web UI for video upload & analysis
+
 │
+
 └─ static/
+
    ├─ uploads/                     # Automatically created folder for raw uploads
+   
    └─ processed/                   # Automatically created folder for results
+   
 
 ## 🛠️ Requirements
 
