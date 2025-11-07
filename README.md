@@ -6,12 +6,19 @@ It provides feedback such as Emotional Positivity Score and Stress/Discomfort Sc
 ## 🚀 Features
 
 ⦁	Upload an interview video through a simple Flask web interface.
+
 ⦁	Detects micro-expressions using a MobileNetV2-based classifier trained on CASME II and DFME datasets.
+
 ⦁	Overlays top detected emotions (with confidence %) on the processed video.
+
 ⦁	Automatically generates:
+
   ⦁ 🎥 Processed video with emotion labels
+  
   ⦁	📊 Emotional Positivity and Stress/Discomfort Scores
+  
   ⦁	📁 Downloadable ZIP (includes both video + result summary)
+  
 
 ## 🧩 Project Structure
 FYP Final/
@@ -40,9 +47,13 @@ FYP Final/
 ## 🛠️ Requirements
 
 ⦁	Windows 10/11 (64-bit)
+
 ⦁	Python 3.8 (recommended for TensorFlow 2.10)
+
 ⦁	FFmpeg (for MP4 video conversion)
+
 ⦁	Internet connection (for initial dependency install)
+
 
 ## ⚙️ Installation & Setup (Windows + VS Code)
 1️⃣ Open Terminal in VS Code inside your project folder:
@@ -50,10 +61,14 @@ FYP Final/
 cd "C:\Users\User\FYP Final"
 
 2️⃣ Create Virtual Environment
+
 C:\Users\User\AppData\Local\Programs\Python\Python38\python.exe -m venv cbs_fyp
+
 cbs_fyp\Scripts\activate
 
+
 3️⃣ Install Dependencies
+
 pip install -r requirements.txt
 
 4️⃣ Add Trained Model
@@ -70,17 +85,18 @@ Unzip or install FFmpeg so that:
 
 C:\ffmpeg\bin\ffmpeg.exe
 
-
 Check installation:
 
 ffmpeg -version
 
 6️⃣ Run the App
+
 python "deploy(MobileNetV2).py"
 
 You should see:
 
 Model loaded successfully
+
  * Running on http://127.0.0.1:5000/
 
 7️⃣ Use the Web Interface
@@ -90,9 +106,11 @@ Open your browser and visit:
 http://127.0.0.1:5000
 
 Upload an interview video (MP4/AVI/MOV/MKV, ≤100 MB).
+
 After processing, download your results as a ZIP file containing:
 
 ⦁	processed_video.mp4 — video with detected emotions
+
 ⦁	results.txt — detailed scores and emotion breakdown
 
 ## 🧮 How It Works
@@ -122,7 +140,9 @@ FFmpeg for video encoding/decoding
 CASME II / DFME datasets for training
 
 ## 📈 Example Output
+
 Positivity Score: 68.4%
+
 Stress Score: 31.6%
 
 Emotion Counts:
@@ -135,4 +155,5 @@ Emotion Counts:
 
 ## 🧑‍💻 Author
 Chin Bao Sheng
+
 Bachelor’s Final Year Project – AI Interview for Micro-Expression Recognition
