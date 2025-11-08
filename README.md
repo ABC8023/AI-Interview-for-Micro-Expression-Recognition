@@ -13,31 +13,31 @@ It provides feedback such as Emotional Positivity Score and Stress/Discomfort Sc
 
 ⦁	Automatically generates:
 
-  ⦁ 🎥 Processed video with emotion labels
+- 🎥 Processed video with emotion labels
   
-  ⦁	📊 Emotional Positivity and Stress/Discomfort Scores
+- 📊 Emotional Positivity and Stress/Discomfort Scores
   
-  ⦁	📁 Downloadable ZIP (includes both video + result summary)
+- 📁 Downloadable ZIP (includes both video + result summary)
   
 
 ## 🧩 Project Structure
-FYP Final/
+    FYP Final/
 
-│  deploy(MobileNetV2).py          # Flask app – runs server, processes uploaded videos
+    │  deploy(MobileNetV2).py          # Flask app – runs server, processes uploaded videos
 
-│  MobileNetV2.py                  # Model training & evaluation (TensorFlow MobileNetV2)
+    │  MobileNetV2.py                  # Model training & evaluation (TensorFlow MobileNetV2)
 
-│  Video_Preprocess(CASME).py      # Dataset preprocessing (CASME II)
+    │  Video_Preprocess(CASME).py      # Dataset preprocessing (CASME II)
 
-│  Video_Preprocess(DFME).py       # Dataset preprocessing (DFME)
+    │  Video_Preprocess(DFME).py       # Dataset preprocessing (DFME)
 
-│  mobilenet_micro_expression_classifier.keras  # Pre-trained model file
+    │  mobilenet_micro_expression_classifier.keras  # Pre-trained model file
 
-│  index.html                      # Web UI for video upload & analysis
+    │  index.html                      # Web UI for video upload & analysis
 
-│
+    │
 
-└─ static/
+    └─ static/
 
       ├─ uploads/                     # Automatically created folder for raw uploads
    
@@ -60,6 +60,7 @@ FYP Final/
 
 cd "C:\Users\User\FYP Final"
 
+
 2️⃣ Create Virtual Environment
 
 C:\Users\User\AppData\Local\Programs\Python\Python38\python.exe -m venv cbs_fyp
@@ -71,6 +72,7 @@ cbs_fyp\Scripts\activate
 
 pip install -r requirements.txt
 
+
 4️⃣ Add Trained Model
 
 Place your trained model file here:
@@ -79,7 +81,11 @@ FYP Final\mobilenet_micro_expression_classifier.keras
 
 (Or update the MODEL_PATH variable in deploy(MobileNetV2).py.)
 
+
 5️⃣ Install FFmpeg
+
+Download FFmpeg from the official website:
+🔗 https://www.ffmpeg.org/download.html
 
 Unzip or install FFmpeg so that:
 
@@ -109,9 +115,9 @@ Upload an interview video (MP4/AVI/MOV/MKV, ≤100 MB).
 
 After processing, download your results as a ZIP file containing:
 
-⦁	processed_video.mp4 — video with detected emotions
+- processed_video.mp4 — video with detected emotions
 
-⦁	results.txt — detailed scores and emotion breakdown
+- results.txt — detailed scores and emotion breakdown
 
 ## 🧮 How It Works
 
