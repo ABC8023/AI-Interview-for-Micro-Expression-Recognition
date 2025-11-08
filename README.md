@@ -58,10 +58,7 @@ It provides feedback such as Emotional Positivity Score and Stress/Discomfort Sc
 ## ⚙️ Installation & Setup (Windows + VS Code)
 1️⃣ Open Terminal in VS Code inside your project folder:
 
-cd "C:\Users\User\FYP Final"
-
-
-2️⃣ Create Virtual Environment
+cd "C:\Users\User\FYP Final"                                                                                                                                                                                                                                                                                                      2️⃣ Create Virtual Environment
 
 C:\Users\User\AppData\Local\Programs\Python\Python38\python.exe -m venv cbs_fyp
 
